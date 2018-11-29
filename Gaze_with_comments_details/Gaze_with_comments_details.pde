@@ -5,8 +5,8 @@ import java.awt.*;
 
 Capture video;
 OpenCV opencv;
-Serial port;
-PImage detect;
+Serial port; // COMS port by arduino
+PImage detect; // image for faces detected
 Rectangle[] faces; // List of detected faces
 
 void setup() {
@@ -52,7 +52,7 @@ void draw() {
         mi = i;
       } else if (s > max2s) max2s = s;
     }
-    if (maxs >= max2s * 2) index = mi; //If area of the biggest face >= 2nd
+    if (maxs >= max2s * 2) index = mi; //If area of the biggest face >= 2nd big face, use the biggest one (max)
     else {
       final int NONE = 0, L = 1, R = 2;
       int flag = NONE;
@@ -63,15 +63,17 @@ void draw() {
       }
       if (flag == L) port.write("L");
       else if (flag == R) port.write("R");
-      else port.write("n"); 
+      else port.write("n"); // will be nervous if there is both L&R
     }
   }
   if (index >= 0) { // -1 means having been processed, no need to do it again
     int x = faces[index].x + faces[index].width / 2;
     if (x < width * .4) port.write("L");
     else if (x > width * .6) port.write("R");
-    else port.write("M" + (x < width / 2 ? "L" : "R")); 
-    // If the face is in the middle, would not turn around if it has turned already
+    // If the face is in the middle(M), with the position of face
+    // aim to not make the eyeball turn around if it has turned already before (seen in arduino file)
+    else port.write("M" + (x < width / 2 ? "L" : "R"));  
+    
   }
 }
 

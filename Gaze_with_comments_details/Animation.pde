@@ -1,21 +1,21 @@
 // For the small Monster's animation, have nothing to do with arduino
 
 PImage animal;
-int eyeball = 45;
-float x=160;
+int eyeball = 45; // diameter
+float x=160; // (x,y) of eyeball
 float y=90;
 
-void drawmonster(){
+void drawmonster(){ // draw
     strokeWeight(0);
     fill(255);
     ellipse(160,90,90,90);//white eye background
     fill(0);
-    ellipse(x,y, eyeball, eyeball); //eyeball
+    ellipse(x,y, eyeball, eyeball); //black eyeball
     image(animal,38,3,240,240);
     relax();
 }
 
-void relax(){
+void relax(){ //ramdom moving 
   if(x>=175){x=162;} if(x<=145){x=159;}
   if(y>=105){y=91;} if(y<=75){y=89;}
   
@@ -25,7 +25,7 @@ void relax(){
 
 void move(){ // Movement of Monster‘s eye related with the newest face
   for (int i = 0; i < faces.length; i++){
-  if((faces[i].x+1/2*faces[i].width)<x){x=x+0.5;} else {x=x-0.5;}
+  if((faces[i].x+1/2*faces[i].width)<x){x=x+0.5;} else {x=x-0.5;} // go reverse direction
   if((faces[i].y+1/2*faces[i].height)<y){y=y+0.1;}else {y=y-0.1;}
   }
 }
